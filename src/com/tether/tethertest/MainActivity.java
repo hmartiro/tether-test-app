@@ -12,8 +12,7 @@ public class MainActivity extends Activity {
 
 	private String TAG = "tethertest";
 	
-	private Tether tether;
-	private String QUADROTOR_ADDRESS = "00:06:66:4E:3E:CE";
+	private String TETHER_ADDRESS = "00:06:66:4E:3E:CE";
 	
 	private double X;
 	private double Y;
@@ -31,46 +30,55 @@ public class MainActivity extends Activity {
 		class TCallbacks implements Tether.TetherCallbacks {
 			
 			public void connected() {
-				Log.v(TAG, "Tether connected!");
-				
 				runOnUiThread(new Runnable() {
 				     public void run() {
-						TextView statusText = (TextView)findViewById(R.id.statusText);
-						statusText.setText("Status: Connected");
+				    	 tetherConnected();
 				    }
 				});
 			}
+			
 			public void disconnected() {
-				Log.w(TAG, "Tether disconnected!");
-				
 				runOnUiThread(new Runnable() {
 				     public void run() {
-						TextView statusText = (TextView)findViewById(R.id.statusText);
-						statusText.setText("Status: Disconnected");
+				    	 tetherDisconnected();
 				    }
 				});
 			}
 			
 			public void positionUpdate(double newX, double newY, double newZ) {
-				
 				X = newX;
 				Y = newY;
 				Z = newZ;
-				Log.v(TAG, "New positions. X: " + X + ", Y: " + Y + ", Z: " + Z);
-				
 				runOnUiThread(new Runnable() {
 				     public void run() {
-						TextView positionText = (TextView)findViewById(R.id.positionText);
-						positionText.setText("X: " + X + "cm, Y: " + Y + "cm, Z: " + Z + "cm");
+				    	 tetherPositionUpdate(X, Y, Z);
 				    }
 				});
 			}
 		}
 		
-		tether = new Tether(QUADROTOR_ADDRESS, new TCallbacks());
-		Log.v(TAG, "my tether: " + tether);
+		Tether.makeTether(TETHER_ADDRESS, new TCallbacks());
+		Log.v(TAG, "my tether: " + Tether.getTether(TETHER_ADDRESS));
 	}
+	
+	public void tetherConnected() {
+		Log.v(TAG, "Tether connected!");
+		TextView statusText = (TextView)findViewById(R.id.statusText);
+		statusText.setText("Status: Connected");
+	}
+	public void tetherDisconnected() {
+		Log.w(TAG, "Tether disconnected!");
+		TextView statusText = (TextView)findViewById(R.id.statusText);
+		statusText.setText("Status: Disconnected");
+	}
+	
+	public void tetherPositionUpdate(double newX, double newY, double newZ) {
 
+		Log.v(TAG, "New positions. X: " + X + ", Y: " + Y + ", Z: " + Z);
+		TextView positionText = (TextView)findViewById(R.id.positionText);
+		positionText.setText("X: " + X + "cm, Y: " + Y + "cm, Z: " + Z + "cm");
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -80,12 +88,22 @@ public class MainActivity extends Activity {
 	
 	public void startTetherButtonPressed(View v) {
 		Log.v(TAG, "Start tether button pressed");
-		tether.start();
+		Tether.getTether(TETHER_ADDRESS).start();
+		TextView tv = (TextView)findViewById(R.id.startStop);
+		tv.setText("Tether started.");
 	}
 	
 	public void stopTetherButtonPressed(View v) {
 		Log.v(TAG, "Stop tether button pressed");
-		tether.stop();
+		Tether.getTether(TETHER_ADDRESS).stop();
+		TextView tv = (TextView)findViewById(R.id.startStop);
+		tv.setText("Tether stopped.");
+	}
+	
+	@Override
+	protected void onStop() {
+		super.onStop();
+		Tether.getTether(TETHER_ADDRESS).stop();
 	}
 }
 

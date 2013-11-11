@@ -14,25 +14,6 @@
         android:layout_height="wrap_content"
         android:text="X: 0.00cm, Y: 0.00cm, Z: 0.00cm" />
 
-    <Button
-        android:id="@+id/startButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/positionText"
-        android:layout_below="@+id/positionText"
-        android:layout_marginTop="52dp"
-        android:onClick="startTetherButtonPressed"
-        android:text="Start Tether" />
-
-    <Button
-        android:id="@+id/stopButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/startButton"
-        android:layout_toRightOf="@+id/startButton"
-        android:onClick="stopTetherButtonPressed"
-        android:text="Stop Tether" />
-
     <TextView
         android:id="@+id/statusText"
         android:layout_width="wrap_content"
@@ -41,5 +22,34 @@
         android:layout_below="@+id/positionText"
         android:layout_marginTop="16dp"
         android:text="Status: Disconnected" />
+
+    <Button
+        android:id="@+id/startButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/positionText"
+        android:layout_below="@+id/statusText"
+        android:layout_marginTop="67dp"
+        android:onClick="startTetherButtonPressed"
+        android:text="Start Tether" />
+
+    <Button
+        android:id="@+id/stopButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/startButton"
+        android:layout_alignBottom="@+id/startButton"
+        android:layout_toRightOf="@+id/startButton"
+        android:onClick="stopTetherButtonPressed"
+        android:text="Stop Tether" />
+
+    <TextView
+        android:id="@+id/startStop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/stopButton"
+        android:layout_alignLeft="@+id/startButton"
+        android:layout_marginBottom="18dp"
+        android:text="Tether stopped." />
 
 </RelativeLayout>
