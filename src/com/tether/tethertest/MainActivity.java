@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.WindowManager.LayoutParams;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
@@ -23,6 +24,8 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+		getWindow().addFlags(LayoutParams.FLAG_KEEP_SCREEN_ON);
+
 		X = 0.0;
 		Y = 0.0;
 		Z = 0.0;
@@ -76,7 +79,10 @@ public class MainActivity extends Activity {
 
 		Log.v(TAG, "New positions. X: " + X + ", Y: " + Y + ", Z: " + Z);
 		TextView positionText = (TextView)findViewById(R.id.positionText);
-		positionText.setText("X: " + X + "cm, Y: " + Y + "cm, Z: " + Z + "cm");
+		positionText.setText(
+				"X: " + String.format("%+.2f", X) + 
+				"cm, Y: " + String.format("%+.2f", Y) + 
+				"cm, Z: " + String.format("%+.2f", Z) + "cm");
 	}
 	
 	@Override
