@@ -31,7 +31,7 @@
         android:layout_below="@+id/statusText"
         android:layout_marginTop="67dp"
         android:onClick="startTetherButtonPressed"
-        android:text="Start Tether" />
+        android:text="Begin" />
 
     <Button
         android:id="@+id/stopButton"
@@ -41,7 +41,7 @@
         android:layout_alignBottom="@+id/startButton"
         android:layout_toRightOf="@+id/startButton"
         android:onClick="stopTetherButtonPressed"
-        android:text="Stop Tether" />
+        android:text="End" />
 
     <TextView
         android:id="@+id/startStop"
@@ -50,7 +50,7 @@
         android:layout_above="@+id/stopButton"
         android:layout_alignLeft="@+id/startButton"
         android:layout_marginBottom="18dp"
-        android:text="Tether stopped." />
+        android:text="Communication enabled. Press to end" />
 
     <TextView
         android:id="@+id/sendCommandTitle"

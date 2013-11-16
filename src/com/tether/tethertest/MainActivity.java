@@ -54,6 +54,13 @@ public class MainActivity extends Activity {
 				case Tether.ERROR:
 					activity.showToast(b.getString("INFO"));
 					break;
+				case Tether.BUTTON_1:
+					boolean pressed1 = b.getBoolean("PRESSED");
+					activity.showToast("Button 1 event. Pressed: " + pressed1);
+					break;
+				case Tether.BUTTON_2:
+					boolean pressed2 = b.getBoolean("PRESSED");
+					activity.showToast("Button 2 event. Pressed: " + pressed2);
 				default:
 					Log.w(TAG, "Received unprocessed message id from libtether: " + msg.what);
 					break;
@@ -73,6 +80,7 @@ public class MainActivity extends Activity {
 		// Create a Tether object and set the Handler
 		tether = new Tether(TETHER_ADDRESS);
 		tether.setHandler(new TetherHandler(this));
+		tether.begin();
 		
 		Log.v(TAG, "my tether: " + Tether.getTether(TETHER_ADDRESS));
 	}
@@ -99,7 +107,7 @@ public class MainActivity extends Activity {
 	
 	public void showToast(String str) {
 	    Toast toast = Toast.makeText(getApplicationContext(),
-    	        str, Toast.LENGTH_LONG);
+    	        str, Toast.LENGTH_SHORT);
     	toast.show();
 	}
 	
@@ -112,28 +120,31 @@ public class MainActivity extends Activity {
 	
 	public void startTetherButtonPressed(View v) {
 		Log.v(TAG, "Start tether button pressed");
-		tether.start();
+		tether.begin();
 		TextView tv = (TextView)findViewById(R.id.startStop);
-		tv.setText("Tether started.");
+		tv.setText("Communication enabled. Press to end.");
 	}
 	
 	public void stopTetherButtonPressed(View v) {
 		Log.v(TAG, "Stop tether button pressed");
-		tether.stop();
+		tether.end();
 		TextView tv = (TextView)findViewById(R.id.startStop);
-		tv.setText("Tether stopped.");
+		tv.setText("Communication disabled. Press to begin.");
 	}
 	
 	public void sendCommandButtonPressed(View v) {
 		EditText et = (EditText)findViewById(R.id.sendCommandField);
-		tether.sendCommand(et.getText().toString());
+		if(tether.isConnected())
+			tether.sendCommand(et.getText().toString());
+		else
+			showToast("not connected to tether!");
 		et.setText("");
 	}
 	
 	@Override
 	protected void onStop() {
 		super.onStop();
-		tether.stop();
+		tether.end();
 	}
 }
 
