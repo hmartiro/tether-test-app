@@ -9,14 +9,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager.LayoutParams;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
 	// Log tag
-	private String TAG = "tethertest";
+	private static String TAG = "tether.test";
 	
-	// Address of the Tether
+	// Address of the device
 	private String TETHER_ADDRESS = "00:06:66:4E:3E:CE";
 	
 	// Tether object
@@ -45,6 +47,15 @@ public class MainActivity extends Activity {
 					double Y = b.getDouble("Y");
 					double Z = b.getDouble("Z");
 					activity.tetherPositionUpdated(X, Y, Z);
+					break;
+				case Tether.AOK:
+					activity.showToast(b.getString("INFO"));
+					break;
+				case Tether.ERROR:
+					activity.showToast(b.getString("INFO"));
+					break;
+				default:
+					Log.w(TAG, "Received unprocessed message id from libtether: " + msg.what);
 					break;
 			}
 		}
@@ -86,6 +97,12 @@ public class MainActivity extends Activity {
 				"cm, Z: " + String.format("%+.2f", Z) + "cm");
 	}
 	
+	public void showToast(String str) {
+	    Toast toast = Toast.makeText(getApplicationContext(),
+    	        str, Toast.LENGTH_LONG);
+    	toast.show();
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -107,10 +124,16 @@ public class MainActivity extends Activity {
 		tv.setText("Tether stopped.");
 	}
 	
+	public void sendCommandButtonPressed(View v) {
+		EditText et = (EditText)findViewById(R.id.sendCommandField);
+		tether.sendCommand(et.getText().toString());
+		et.setText("");
+	}
+	
 	@Override
 	protected void onStop() {
 		super.onStop();
-		Tether.getTether(TETHER_ADDRESS).stop();
+		tether.stop();
 	}
 }
 

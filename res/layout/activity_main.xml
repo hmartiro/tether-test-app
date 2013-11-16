@@ -52,4 +52,34 @@
         android:layout_marginBottom="18dp"
         android:text="Tether stopped." />
 
+    <TextView
+        android:id="@+id/sendCommandTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/startButton"
+        android:layout_below="@+id/startButton"
+        android:layout_marginTop="94dp"
+        android:text="Send Command:" />
+
+    <EditText
+        android:id="@+id/sendCommandField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/sendCommandTitle"
+        android:layout_below="@+id/sendCommandTitle"
+        android:ems="10" >
+
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/sendButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/sendCommandField"
+        android:layout_alignBottom="@+id/sendCommandField"
+        android:layout_toRightOf="@+id/sendCommandField"
+        android:onClick="sendCommandButtonPressed"
+        android:text="Send" />
+
 </RelativeLayout>
